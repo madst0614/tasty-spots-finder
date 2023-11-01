@@ -56,7 +56,7 @@ public class DiscordWebhookRequestDTO {
 
         public static DiscordWebhookRequestDTO.Field from(Restaurant restaurant) {
             return DiscordWebhookRequestDTO.Field.builder()
-                    .name(restaurant.getBizPlaceName())
+                    .name(restaurant.getBizPlaceName()+"("+restaurant.getRate()+")")
                     .value(restaurant.getRefinedRoadNameAddress())
                     .inline(true)
                     .build();
