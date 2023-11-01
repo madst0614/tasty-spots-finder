@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
@@ -66,8 +67,10 @@ public class Restaurant {
 
     private Double refinedLongitude;
 
+    @ColumnDefault("0.0")
     private Double rate;
 
+    @ColumnDefault("0")
     private Long reviewedCount;
 
     public void updateRestaurant(JsonNode row) {
@@ -79,5 +82,9 @@ public class Restaurant {
         this.refinedZipCode = row.get("REFINE_ZIP_CD").asText();
         this.refinedLatitude = row.get("REFINE_WGS84_LAT").asDouble();
         this.refinedLongitude = row.get("REFINE_WGS84_LOGT").asDouble();
+    }
+
+    public void updateReview(Integer rate){
+        this.rate = (this.rate * reviewedCount + rate) / ++reviewedCount;
     }
 }
