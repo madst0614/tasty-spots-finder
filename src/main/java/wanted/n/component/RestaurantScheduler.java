@@ -39,8 +39,7 @@ public class RestaurantScheduler {
      * 매일 23:59에 실행되는 스케줄링
      * 외부 API에서 데이터를 가져와서 데이터베이스에 저장
      */
-//    @Scheduled(cron = "0 59 23 * * ?")
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "0 59 23 * * ?")
     @Transactional
     public void getRestaurantsInfo() {
         subUris.forEach(uri -> {
@@ -112,8 +111,6 @@ public class RestaurantScheduler {
             restaurantRepository.save(restaurant);
         }
     }
-
-
 
     /**
      * JSON 데이터를 Restaurant 객체로 매핑
