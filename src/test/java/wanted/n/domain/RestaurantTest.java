@@ -14,7 +14,9 @@ class RestaurantTest {
                 .rate(3.5)
                 .reviewedCount(4L)
                 .build();
+
         restaurant.updateReview(1);
+
         assertThat(restaurant.getRate()).isEqualTo(3);
         assertThat(restaurant.getReviewedCount()).isEqualTo(5);
     }
