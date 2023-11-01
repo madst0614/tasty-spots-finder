@@ -8,8 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wanted.n.domain.Restaurant;
-import wanted.n.domain.Review;
-import wanted.n.domain.User;
 import wanted.n.dto.ReviewRequestDTO;
 import wanted.n.repository.RestaurantRepository;
 
@@ -24,10 +22,9 @@ class RestaurantServiceTest {
 
     @Mock private RestaurantRepository restaurantRepository;
 
-    private User user;
     private Restaurant restaurant;
     private ReviewRequestDTO reviewRequestDTO;
-    private Review review;
+
     @BeforeEach
     void before(){
         restaurant = Restaurant.builder()
@@ -43,7 +40,7 @@ class RestaurantServiceTest {
                 .build();
     }
     @Test
-    void 리뷰등록(){
+    void 평점_리뷰수_변경(){
         when(restaurantRepository.findById("test")).thenReturn(Optional.of(restaurant));
 
         restaurantService.updateRate(reviewRequestDTO);
