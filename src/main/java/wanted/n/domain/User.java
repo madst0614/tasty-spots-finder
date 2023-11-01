@@ -1,14 +1,11 @@
 package wanted.n.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.*;
 import wanted.n.enums.UserRole;
 import wanted.n.enums.UserStatus;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -45,4 +42,8 @@ public class User extends BaseEntity{
 
     @Column
     private Boolean lunch_served;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList;
+
 }
