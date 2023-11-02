@@ -3,6 +3,8 @@ package wanted.n.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import wanted.n.domain.Restaurant;
 import wanted.n.domain.Review;
 import wanted.n.dto.ReviewRequestDTO;
 import wanted.n.exception.CustomException;
@@ -28,8 +30,12 @@ public class ReviewService {
         reviewRequestDTO.setUser(userRepository.findById(reviewRequestDTO.getUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
 
-        reviewRequestDTO.setRestaurant(restaurantRepository.findById(reviewRequestDTO.getRestaurantId())
-                .orElseThrow(() -> new CustomException(ErrorCode.RESTAURANT_NOT_FOUND)));
+        Restaurant restaurant = restaurantRepository.findById(reviewRequestDTO.getRestaurantId())
+                .orElseThrow(() -> new CustomException(ErrorCode.RESTAURANT_NOT_FOUND));
+
+        reviewRequestDTO.setRestaurant(restaurant);
+
+        restaurant.updateReview(reviewRequestDTO.getRate());
 
         reviewRepository.save(Review.from(reviewRequestDTO));
     }
