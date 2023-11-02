@@ -6,4 +6,5 @@ import wanted.n.domain.User;
 
 @Primary
 public interface UserRepository extends JpaRepository<User, Long>, UserQRepository {
+
 }
