@@ -1,13 +1,19 @@
 package wanted.n.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import wanted.n.dto.ReviewRequestDTO;
+import wanted.n.domain.Restaurant;
+import wanted.n.dto.RestaurantDetailResponseDTO;
+import wanted.n.dto.RestaurantSearchRequestDTO;
+import wanted.n.dto.RestaurantSearchResponseDTO;
 import wanted.n.exception.CustomException;
 import wanted.n.exception.ErrorCode;
 import wanted.n.repository.RestaurantRepository;
 import wanted.n.repository.querydsl.RestaurantQuerydslRepository;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,13 +32,4 @@ public class RestaurantService {
 //        return RestaurantDetailResponseDTO.from(findRestaurant);
 //    }
 
-    /**
-     * restaurant 평점, 리뷰 수 업데이트
-     */
-    @Transactional
-    public void updateRate(ReviewRequestDTO reviewRequestDTO){
-        restaurantRepository.findById(reviewRequestDTO.getRestaurantId())
-                .orElseThrow(() -> new CustomException(ErrorCode.RESTAURANT_NOT_FOUND))
-                .updateReview(reviewRequestDTO.getRate());
-    }
 }

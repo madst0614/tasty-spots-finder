@@ -26,12 +26,11 @@ public class ReviewController {
 
     @PostMapping("")
     @ApiOperation(value = "리뷰등록", notes = "리뷰등록 api입니다.")
-    public ResponseEntity<Void> restaurantList(@Valid @RequestBody ReviewRequestDTO reviewRequestDTO
+    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRequestDTO reviewRequestDTO
             //, @RequestHeader(AUTHORIZATION) String token
     ){
         //reviewRequestDTO.setUserId(jwtTokenProvider.getIdFromToken(token));
         reviewService.createReview(reviewRequestDTO);
-        restaurantService.updateRate(reviewRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
