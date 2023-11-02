@@ -3,14 +3,20 @@ package wanted.n.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import wanted.n.service.SggLatLonService;
 
+import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.springframework.http.HttpStatus.CREATED;
+import static wanted.n.enums.FileValues.HEADER_VALUES_FILE;
+import static wanted.n.enums.FileValues.TEXT_CSV;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/files")
@@ -29,5 +35,16 @@ public class SggLatLonController {
         return ResponseEntity.status(CREATED).build();
     }
 
+    @GetMapping
+    @ApiOperation(value = "csv 양식 다운로드", notes = "csv 양식을 다운로드")
+    public ResponseEntity<InputStreamResource> downloadTemplate() {
+
+        InputStreamResource sggCsvFile = sggLatLonService.getTemplate();
+
+        return ResponseEntity.ok()
+                .header(CONTENT_DISPOSITION, HEADER_VALUES_FILE)
+                .contentType(MediaType.parseMediaType(TEXT_CSV))
+                .body(sggCsvFile);
+    }
 }
 

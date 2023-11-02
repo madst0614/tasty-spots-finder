@@ -2,14 +2,18 @@ package wanted.n.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import wanted.n.domain.SggLatLon;
 import wanted.n.repository.SggLatLonRepository;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import static wanted.n.enums.FileValues.CSV_CONTENT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,6 +42,19 @@ public class SggLatLonService {
         } catch (IOException e) {
             log.error("파일 읽기 실패 {}", e.getMessage());
         }
+    }
+
+    /**
+     * CSV 데이터 양식을 생성하고 이를 InputStreamResource 형태로 반환
+     *
+     * @return CSV 데이터 양식을 포함하는 InputStreamResource 객체
+     */
+    public InputStreamResource getTemplate() {
+        // CSV 데이터를 바이트 배열로 변환
+        byte[] csvBytes = CSV_CONTENT.getBytes();
+
+        // 바이트 배열 -> InputStream -> Resource로 래핑
+        return new InputStreamResource(new ByteArrayInputStream(csvBytes));
     }
 
 }
