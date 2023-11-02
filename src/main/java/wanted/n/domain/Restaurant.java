@@ -10,6 +10,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -72,6 +74,9 @@ public class Restaurant {
 
     @ColumnDefault("0")
     private Long reviewedCount;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Review> reviewList;
 
     public void updateRestaurant(JsonNode row) {
         this.sigunName = row.get("SIGUN_NM").asText();
