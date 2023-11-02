@@ -35,7 +35,7 @@ public class SggLatLonController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    @GetMapping
+    @GetMapping("/template")
     @ApiOperation(value = "csv 양식 다운로드", notes = "csv 양식을 다운로드")
     public ResponseEntity<InputStreamResource> downloadTemplate() {
 
