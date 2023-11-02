@@ -148,6 +148,8 @@ public class RestaurantScheduler {
                         .refinedZipCode(asString(row, "REFINE_ZIP_CD"))
                         .refinedLongitude(asDouble(row, "REFINE_WGS84_LOGT"))
                         .refinedLatitude(asDouble(row, "REFINE_WGS84_LAT"))
+                        .rate(0.0)
+                        .reviewedCount(0L)
                         .build();
     }
 

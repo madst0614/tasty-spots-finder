@@ -12,7 +12,6 @@ import wanted.n.exception.CustomException;
 import wanted.n.exception.ErrorCode;
 import wanted.n.repository.RestaurantRepository;
 import wanted.n.repository.querydsl.RestaurantQuerydslRepository;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,16 +19,5 @@ import java.util.List;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final RestaurantQuerydslRepository restaurantQuerydslRepository;
-
-//    public Page<RestaurantSearchResponseDTO> searchList(RestaurantSearchRequestDTO restaurantSearchRequestDTO, Pageable pageable) {
-//        return restaurantQuerydslRepository.searchList(restaurantSearchRequestDTO, pageable);
-//    }
-//
-//    public RestaurantDetailResponseDTO getDetail(String id) {
-//        Restaurant findRestaurant = restaurantRepository.findById(id)
-//                .orElseThrow(() -> new CustomException(ErrorCode.RESTAURANT_NOT_FOUND));
-//        return RestaurantDetailResponseDTO.from(findRestaurant);
-//    }
 
 }
