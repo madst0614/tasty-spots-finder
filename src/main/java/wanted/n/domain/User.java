@@ -5,35 +5,38 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+
 import wanted.n.enums.UserRole;
 import wanted.n.enums.UserStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String account;
+    @NotNull
+    private String nickname;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
     private String password;
 
-    @Column
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column
+    @Column(name = "user_status")
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
@@ -43,6 +46,6 @@ public class User extends BaseEntity{
     @Column
     private Double lon;
 
-    @Column
-    private Boolean lunch_served;
+    @Column(name = "lunch_served")
+    private Boolean lunchServed;
 }
