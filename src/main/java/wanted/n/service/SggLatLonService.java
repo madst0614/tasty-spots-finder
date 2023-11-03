@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import wanted.n.domain.SggLatLon;
 import wanted.n.dto.SggLatLonDTO;
+
 import wanted.n.repository.SggLatLonRepository;
 
 import java.io.BufferedReader;
@@ -33,6 +34,7 @@ public class SggLatLonService {
      */
     @CacheEvict(value = "sggLatLonList", key = "'sggList'")
     public void updateCsv(MultipartFile csvFile) {
+
         try (BufferedReader br = new BufferedReader(new InputStreamReader(csvFile.getInputStream()))) {
             // 첫 번째 줄은 제목 행이므로 한 번 읽어서 무시.
             br.readLine();
@@ -72,4 +74,5 @@ public class SggLatLonService {
                 .map(SggLatLonDTO::from)
                 .collect(java.util.stream.Collectors.toList());
     }
+
 }

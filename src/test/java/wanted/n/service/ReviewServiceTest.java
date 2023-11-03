@@ -68,7 +68,6 @@ class ReviewServiceTest {
 
         assertThat(restaurant.getReviewedCount()).isEqualTo(1);
         assertThat(restaurant.getRate()).isEqualTo(5);
-
         verify(reviewRepository, times(1)).save(any(Review.class));
     }
 
