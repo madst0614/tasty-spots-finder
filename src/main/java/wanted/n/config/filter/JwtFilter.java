@@ -44,19 +44,19 @@ public class JwtFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        // 1. ALL_WHITELIST 체크
         if(isFilterCheck(request.getRequestURI())){
             filterChain.doFilter(request,response);
             return;
         }
-
+        // 2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED
         if(!isContainToken(request)){
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"인증이 필요합니다");
             return;
         }
 
         String token = getTokenFromRequest(request);
-
+        // 3. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
         try{
             SecurityContextHolder
                     .getContext()

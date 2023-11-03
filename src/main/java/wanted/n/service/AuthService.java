@@ -16,6 +16,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
+
+    /**
+     *  Access Token 발급 메소드
+     *  기능
+     *      RefreshToken을 확인해서 Access Token을 발급해줍니다.
+     *      Refresh Token의 id를 추출해서 Access Token에 API 이용에 필요한 정보들을 넣어줍니다.
+     */
     @Transactional
     public AccessTokenDTO issueNewAccessToken(RefreshTokenDTO refreshTokenDTO) {
         String refreshToken = refreshTokenDTO.getRefreshToken();
