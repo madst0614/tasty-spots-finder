@@ -18,7 +18,9 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    /* Spring Security 필터 체인 설정 */
+    /* Spring Security 필터 체인 설정
+    *   jwtFilter 추가
+    *  */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
