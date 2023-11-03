@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         do Filtering Internal
         1. ALL_WHITELIST 체크
         2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED
-        3. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가증
+        3. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
 
         인증 객체 구조(Authentication 객체)
         1. Id 혹은 User 객체
