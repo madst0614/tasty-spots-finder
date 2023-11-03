@@ -19,23 +19,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final RedisService redisService;
     private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // redis에 캐싱된 데이터가 있는지 확인
-        User user = redisService.findUserByEmail(email);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
-        // 없다면 DB에서 가져와서 redis에 저장 후 사용
-        if(user == null){
-            user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-            redisService.saveUser(user);
-        }
-
+        User user = userRepository.findById(Long.parseLong(id))
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         List<GrantedAuthority> authorities = user.getUserRole().getAuthorities();
 
