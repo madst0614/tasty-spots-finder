@@ -24,7 +24,11 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtProvider jwtProvider;
 
     /* 프리 패스 리스트(인증 없이) : auth(refresh token), users(sign-in, sign-up) */
-    private static final String[] ALL_WHITELIST={"/api/v1/auth/refreshToken", "/api/v1/users/sign-in", "/api/v1/users/sign-up"};
+    private static final String[] ALL_WHITELIST
+            ={"/api/v1/auth/token/access"
+            , "/api/v1/auth/token/refresh"
+            , "/api/v1/users/sign-in"
+            , "/api/v1/users/sign-up"};
 
     /*
         do Filtering Internal

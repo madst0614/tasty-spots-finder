@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wanted.n.config.provider.JwtProvider;
 import wanted.n.dto.AccessTokenDTO;
 import wanted.n.dto.AccessTokenRequestDTO;
 import wanted.n.dto.AccessTokenResponseDTO;

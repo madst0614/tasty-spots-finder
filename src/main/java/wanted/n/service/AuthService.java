@@ -13,7 +13,6 @@ import wanted.n.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final RedisService redisService;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
@@ -21,20 +20,12 @@ public class AuthService {
     public AccessTokenDTO issueNewAccessToken(RefreshTokenDTO refreshTokenDTO) {
         String refreshToken = refreshTokenDTO.getRefreshToken();
 
-        if(jwtProvider.validateToken(refreshToken))
+        if(!jwtProvider.validateToken(refreshToken))
             throw new CustomException(ErrorCode.REFRESH_TOKEN_EXPIRED);
 
-        String email = jwtProvider.getEmailFromToken(refreshToken);
+        Long id = jwtProvider.getIdFromToken(refreshToken);
 
-        // redis User 데이터 확인
-        User user = redisService.findUserByEmail(email);
-
-        // 없으면 DB에서 User 데이터 가져오기
-        if(user == null){
-            user = userRepository.findByEmail(email).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
-
-            redisService.saveUser(user);
-        }
+        User user = userRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
 
         String newAccessToken =
                 jwtProvider.generateAccessToken(TokenIssuanceDTO.from(user));
