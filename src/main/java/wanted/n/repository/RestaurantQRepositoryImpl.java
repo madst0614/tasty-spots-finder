@@ -1,15 +1,24 @@
 package wanted.n.repository;
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import wanted.n.domain.QRestaurant;
 import wanted.n.domain.Restaurant;
+import wanted.n.dto.RestaurantDetailResponseDTO;
 import wanted.n.enums.RestaurantCategory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static wanted.n.domain.QRestaurant.*;
+import static wanted.n.domain.QReview.*;
+import static wanted.n.domain.QUser.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,5 +49,21 @@ public class RestaurantQRepositoryImpl implements RestaurantQRepository {
                         .fetch().stream()
                 )
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<RestaurantDetailResponseDTO> findByIdWithReviewList(String id) {
+        return Optional.ofNullable(queryFactory.select(Projections.constructor(RestaurantDetailResponseDTO.class,restaurant))
+                .from(restaurant)
+                .leftJoin(restaurant.reviewList, review)
+                .fetchJoin()
+                .leftJoin(review.user, user)
+                .fetchJoin()
+                .where(eqId(id))
+                .fetchFirst());
+    }
+
+    public BooleanExpression eqId(String id){
+        return StringUtils.hasText(id) ? restaurant.id.eq(id) : null;
     }
 }

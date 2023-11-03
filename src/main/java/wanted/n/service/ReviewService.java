@@ -3,7 +3,6 @@ package wanted.n.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import wanted.n.domain.Restaurant;
 import wanted.n.domain.Review;
 import wanted.n.dto.ReviewRequestDTO;
