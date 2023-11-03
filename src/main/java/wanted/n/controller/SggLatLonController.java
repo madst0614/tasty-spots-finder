@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import wanted.n.dto.SggLatLonDTO;
+import wanted.n.dto.SggLatLonResponseDTO;
 import wanted.n.service.SggLatLonService;
+
+import java.util.List;
 
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static wanted.n.enums.FileValues.HEADER_VALUES_FILE;
 import static wanted.n.enums.FileValues.TEXT_CSV;
 
@@ -45,6 +50,15 @@ public class SggLatLonController {
                 .header(CONTENT_DISPOSITION, HEADER_VALUES_FILE)
                 .contentType(MediaType.parseMediaType(TEXT_CSV))
                 .body(sggCsvFile);
+    }
+
+    @GetMapping
+    @ApiOperation(value = "시군구 목록조회", notes = "시군구 목록을 조회")
+    public ResponseEntity<SggLatLonResponseDTO> getSggLatLons(){
+
+        List<SggLatLonDTO> sggLatLons = sggLatLonService.getSggLatLons();
+
+        return ResponseEntity.status(OK).body(SggLatLonResponseDTO.from(sggLatLons));
     }
 }
 
