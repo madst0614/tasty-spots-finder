@@ -1,23 +1,18 @@
 package wanted.n.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
-
 import wanted.n.dto.UserSignUpRequestDTO;
+import lombok.*;
 import wanted.n.enums.UserRole;
 import wanted.n.enums.UserStatus;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Entity
 public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +39,9 @@ public class User extends BaseEntity{
 
     @Column(name = "lunch_served")
     private Boolean lunchServed;
+  
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList;
 
     public static User from(UserSignUpRequestDTO userSignUpRequestDTO){
         return User.builder()
