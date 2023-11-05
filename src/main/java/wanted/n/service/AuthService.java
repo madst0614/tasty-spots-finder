@@ -44,6 +44,22 @@ public class AuthService {
     }
 
     /**
+     *  로그인 시 Access Token 발급 메소드
+     */
+    @Transactional
+    public AccessTokenDTO signInAccessToken(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        String newAccessToken =
+                jwtProvider.generateAccessToken(TokenIssuanceDTO.from(user));
+
+        return AccessTokenDTO.builder()
+                .accessToken(newAccessToken)
+                .build();
+    }
+
+    /**
      *  Refresh Token 발급 메소드
      *  기능
      *      Refresh Token을 발급해줍니다.
