@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wanted.n.dto.RestaurantDetailResponseDTO;
-import wanted.n.dto.RestaurantSearchRequestDTO;
-import wanted.n.dto.RestaurantSearchResponseDTO;
 import wanted.n.service.RestaurantService;
 
 @RequiredArgsConstructor
