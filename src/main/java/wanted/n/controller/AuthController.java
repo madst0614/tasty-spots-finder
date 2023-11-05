@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wanted.n.config.provider.JwtProvider;
 import wanted.n.dto.AccessTokenDTO;
 import wanted.n.dto.AccessTokenRequestDTO;
 import wanted.n.dto.AccessTokenResponseDTO;
@@ -14,8 +13,6 @@ import wanted.n.dto.RefreshTokenDTO;
 import wanted.n.service.AuthService;
 
 import javax.validation.Valid;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -35,5 +32,4 @@ public class AuthController {
 
         return new ResponseEntity<>(AccessTokenResponseDTO.from(accessTokenDTO), HttpStatus.OK);
     }
-
 }

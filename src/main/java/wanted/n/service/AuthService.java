@@ -15,6 +15,7 @@ import wanted.n.repository.UserRepository;
 public class AuthService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final RedisService redisService;
 
 
     /**
@@ -27,7 +28,7 @@ public class AuthService {
     public AccessTokenDTO issueNewAccessToken(RefreshTokenDTO refreshTokenDTO) {
         String refreshToken = refreshTokenDTO.getRefreshToken();
 
-        if(!jwtProvider.validateToken(refreshToken))
+        if(jwtProvider.validateToken(refreshToken))
             throw new CustomException(ErrorCode.REFRESH_TOKEN_EXPIRED);
 
         Long id = jwtProvider.getIdFromToken(refreshToken);
@@ -41,4 +42,45 @@ public class AuthService {
                 .accessToken(newAccessToken)
                 .build();
     }
+
+    /**
+     *  Refresh Token 발급 메소드
+     *  기능
+     *      Refresh Token을 발급해줍니다.
+     *      <Key, Value> 형식으로 <id, Refresh Token>을 Redis 서버에 저장합니다.
+     */
+    @Transactional
+    public RefreshTokenDTO issueNewRefreshToken(UserInfoDTO userInfoDTO) {
+        String refreshToken = jwtProvider.generateRefreshToken(userInfoDTO.getId());
+
+        redisService.saveRefreshToken(userInfoDTO.getId(), refreshToken);
+
+        return RefreshTokenDTO.builder()
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    /**
+     *  Refresh Token 정합성 검사 메소드
+     *  기능
+     *      Refresh Token이 레디스에 있는 값과 일치하는지 확인합니다.
+     */
+    @Transactional
+    public Boolean isRefreshTokenEqServer(ValidateTokenDTO validateTokenDTO) {
+        String refreshToken = validateTokenDTO.getToken();
+
+        // 레디스에 있는 값과 일치하면 true 반환
+        return redisService.isRefreshTokenInRedis
+                (validateTokenDTO.getId(), refreshToken);
+    }
+
+    /**
+        Refresh Token 삭제 메소드
+     */
+    @Transactional
+    public void deleteRefreshToken(UserInfoDTO userInfoDTO) {
+
+        redisService.deleteRefreshToken(userInfoDTO.getId());
+    }
+
 }

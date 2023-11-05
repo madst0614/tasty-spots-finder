@@ -1,8 +1,6 @@
 package wanted.n.config.filter;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
@@ -33,7 +31,8 @@ public class JwtFilter extends OncePerRequestFilter {
         do Filtering Internal
         1. ALL_WHITELIST 체크
         2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED
-        3. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
+        3. 토큰 유효 기간 체크 -> 만료 됐으면 HttpsResponse UNAUTHORIZED
+        4. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
 
         인증 객체 구조(Authentication 객체)
         1. Id 혹은 User 객체
@@ -44,24 +43,32 @@ public class JwtFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 1. ALL_WHITELIST 체크
-        if(isFilterCheck(request.getRequestURI())){
-            filterChain.doFilter(request,response);
-            return;
-        }
-        // 2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED
-        if(!isContainToken(request)){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"인증이 필요합니다");
-            return;
-        }
-
-        String token = getTokenFromRequest(request);
-        // 3. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
         try{
-            SecurityContextHolder
-                    .getContext()
-                    .setAuthentication(jwtProvider.getAuthentication(token));
+            // 1. 필터링 대상 체크(ALLWHITELIST에 있으면 패스)
+            if(isFilterCheck(request.getRequestURI())){
+                // 2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED
+                if(!isContainToken(request)){
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"토큰이 필요합니다");
 
+                    return;
+                }
+
+                String token = getTokenFromRequest(request);
+
+                // 3. 토큰 유효 기간 체크 -> 만료 됐으면 HttpsResponse UNAUTHORIZED
+                if(jwtProvider.validateToken(token)){
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"토큰이 만료되었습니다");
+
+                    return;
+                }
+
+                // 4. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
+                SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(jwtProvider.getAuthentication(token));
+            }
+
+            // 필터링 통과하면 다음 필터 체인에 저장된 필터 진행
             filterChain.doFilter(request,response);
         }catch (Exception e){
             e.printStackTrace();
@@ -71,7 +78,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     /* 프리 패스 White-List 대상 판별 */
     private boolean isFilterCheck(String requestURI){
-        return PatternMatchUtils.simpleMatch(ALL_WHITELIST, requestURI);
+        return !PatternMatchUtils.simpleMatch(ALL_WHITELIST, requestURI);
     }
 
     // Http 요청에 토큰 유무 확인
