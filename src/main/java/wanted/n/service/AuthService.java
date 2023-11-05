@@ -17,7 +17,6 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RedisService redisService;
 
-
     /**
      *  Access Token 발급 메소드
      *  기능
@@ -86,10 +85,13 @@ public class AuthService {
                 (jwtProvider.getIdFromToken(refreshToken), refreshToken);
     }
 
+    public Long getIdFromToken(AccessTokenDTO accessTokenDTO){
+        return jwtProvider.getIdFromToken(accessTokenDTO.getAccessToken());
+    }
+
     /**
         Refresh Token 삭제 메소드
      */
-    @Transactional
     public void deleteRefreshToken(UserInfoDTO userInfoDTO) {
 
         redisService.deleteRefreshToken(userInfoDTO.getId());
