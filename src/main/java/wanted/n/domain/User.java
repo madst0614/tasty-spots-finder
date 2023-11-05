@@ -54,7 +54,7 @@ public class User extends BaseEntity{
         return User.builder()
                 .email(userSignUpRequestDTO.getEmail())
                 .password(userSignUpRequestDTO.getPassword())
-                .account(userSignUpRequestDTO.getNickname())
+                .account(userSignUpRequestDTO.getAccount())
                 .userRole(UserRole.ROLE_USER)
                 .userStatus(UserStatus.UNVERIFIED)
                 .lat(userSignUpRequestDTO.getLat())

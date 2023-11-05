@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthority> authorities = user.getUserRole().getAuthorities();
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getNickname())
+                .withUsername(user.getId().toString())
                 .password(user.getPassword())
                 .authorities(authorities)
                 .build();

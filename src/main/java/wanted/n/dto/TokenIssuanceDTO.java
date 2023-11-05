@@ -10,14 +10,14 @@ import wanted.n.enums.UserRole;
 public class TokenIssuanceDTO {
     private String email;
     private Long id;
-    private String nickname;
+    private String account;
     private UserRole userRole;
 
     public static TokenIssuanceDTO from(User user) {
         return TokenIssuanceDTO.builder()
                 .email(user.getEmail())
                 .id(user.getId())
-                .nickname(user.getNickname())
+                .account(user.getAccount())
                 .userRole(user.getUserRole())
                 .build();
     }

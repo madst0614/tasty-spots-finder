@@ -23,8 +23,8 @@ public class UserSignUpRequestDTO {
     @Size(min = 10, max = 20, message = "비밀번호는 10자 이상 20자 이하로 입력해 주세요.")
     private String password;
 
-    @NotBlank(message = "닉네임을 입력해 주세요.")
-    private String nickname;
+    @NotBlank(message = "계정을 입력해 주세요.")
+    private String account;
 
     private Double lat;
     private Double lon;
