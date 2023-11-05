@@ -28,8 +28,8 @@ public class AuthService {
     public AccessTokenDTO issueNewAccessToken(RefreshTokenDTO refreshTokenDTO) {
         String refreshToken = refreshTokenDTO.getRefreshToken();
 
-        if(jwtProvider.validateToken(refreshToken))
-            throw new CustomException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+        if(isRefreshTokenEqServer(refreshToken))
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
 
         Long id = jwtProvider.getIdFromToken(refreshToken);
 
@@ -47,9 +47,7 @@ public class AuthService {
      *  로그인 시 Access Token 발급 메소드
      */
     @Transactional
-    public AccessTokenDTO signInAccessToken(Long id) {
-
-        User user = userRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+    public AccessTokenDTO signInAccessToken(User user) {
 
         String newAccessToken =
                 jwtProvider.generateAccessToken(TokenIssuanceDTO.from(user));
@@ -81,13 +79,11 @@ public class AuthService {
      *  기능
      *      Refresh Token이 레디스에 있는 값과 일치하는지 확인합니다.
      */
-    @Transactional
-    public Boolean isRefreshTokenEqServer(ValidateTokenDTO validateTokenDTO) {
-        String refreshToken = validateTokenDTO.getToken();
+    public Boolean isRefreshTokenEqServer(String refreshToken) {
 
         // 레디스에 있는 값과 일치하면 true 반환
         return redisService.isRefreshTokenInRedis
-                (validateTokenDTO.getId(), refreshToken);
+                (jwtProvider.getIdFromToken(refreshToken), refreshToken);
     }
 
     /**
