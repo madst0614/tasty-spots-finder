@@ -1,35 +1,33 @@
 package wanted.n.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
-
 import wanted.n.dto.UserSignUpRequestDTO;
+import lombok.*;
 import wanted.n.enums.UserRole;
 import wanted.n.enums.UserStatus;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Entity
+
 public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @NotNull
+    @Column
+    private String account;
+
+    @Column
     private String email;
 
+    @Column
     private String password;
-
-    @NotNull
-    private String nickname;
 
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
@@ -39,22 +37,29 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @Column
     private Double lat;
+
+    @Column
     private Double lon;
 
     @Column(name = "lunch_served")
-    private Boolean lunchServed;
+    private Boolean lunch_served;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList;
+
 
     public static User from(UserSignUpRequestDTO userSignUpRequestDTO){
         return User.builder()
                 .email(userSignUpRequestDTO.getEmail())
                 .password(userSignUpRequestDTO.getPassword())
-                .nickname(userSignUpRequestDTO.getNickname())
+                .account(userSignUpRequestDTO.getNickname())
                 .userRole(UserRole.ROLE_USER)
                 .userStatus(UserStatus.UNVERIFIED)
                 .lat(userSignUpRequestDTO.getLat())
                 .lon(userSignUpRequestDTO.getLon())
-                .lunchServed(userSignUpRequestDTO.getLunchServed())
+                .lunch_served(userSignUpRequestDTO.getLunchServed())
                 .build();
 
     }
