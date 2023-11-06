@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wanted.n.dto.UserSignInRequestDTO;
-import wanted.n.dto.UserSignInResponseDTO;
-import wanted.n.dto.UserSignOutRequestDTO;
-import wanted.n.dto.UserSignUpRequestDTO;
+import wanted.n.dto.*;
 import wanted.n.service.UserService;
 
 import javax.validation.Valid;
@@ -51,5 +48,30 @@ public class UserController {
         userService.signOutUser(UserSignOutRequestDTO.builder().token(token).build());
 
         return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @PatchMapping("/update-loc")
+    @ApiOperation(value = "위치 업데이트", notes = "사용자의 위치 정보를 업데이트 합니다.")
+    public ResponseEntity<Void> updateLocation(@RequestHeader(AUTHORIZATION) String token
+            , @Valid @RequestBody UserLocUpdateRequestDTO userLocUpdateRequestDTO) {
+        userService.updateUserLoc(token, userLocUpdateRequestDTO);
+
+        return ResponseEntity.status(OK).build();
+    }
+
+    @PatchMapping("/lunch-served")
+    @ApiOperation(value = "점심 제공 여부 업데이트", notes = "사용자의 점심 제공 정보를 업데이트 합니다.")
+    public ResponseEntity<Void> updateLunchServed(@RequestHeader(AUTHORIZATION) String token
+            , @Valid @RequestBody UserLunchUpdateRequestDTO userLunchUpdateRequestDTO) {
+        userService.updateUserLunchServed(token, userLunchUpdateRequestDTO);
+
+        return ResponseEntity.status(OK).build();
+    }
+
+    @GetMapping("/info")
+    @ApiOperation(value = "사용자 정보 가져오기", notes = "사용자의 정보를 가져옵니다")
+    public ResponseEntity<UserInfoResponseDTO> getUserInfo(@RequestHeader(AUTHORIZATION) String token){
+
+        return ResponseEntity.status(OK).body(userService.getUserInfo(token));
     }
 }
