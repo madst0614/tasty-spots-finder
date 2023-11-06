@@ -40,7 +40,8 @@ public class JwtProvider{
 
     /* Access Token 생성 메서드 - 클레임에 ID와 계정, UserRole 삽입 */
     public String generateAccessToken(TokenIssuanceDTO tokenIssuanceDTO) {
-        Claims claims = Jwts.claims().setSubject(tokenIssuanceDTO.getId().toString());
+        Claims claims = Jwts.claims();
+        claims.put("id", tokenIssuanceDTO.getId().toString());
         claims.put("account", tokenIssuanceDTO.getAccount());
         claims.put("userRole", tokenIssuanceDTO.getUserRole().getRoleName());
 
