@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import wanted.n.dto.RestaurantDetailResponseDTO;
 import wanted.n.service.RestaurantService;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/restaurants")
 @Api(tags = "Restaurant API", description = "맛집 관련 API")
@@ -23,11 +25,11 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-//    @GetMapping("")
-//    @ApiOperation(value = "맛집리스트", notes = "입력된 위치에서 지정된 거리내의 맛집 리스트 검색")
-//    public Page<RestaurantSearchResponseDTO> searchList(RestaurantSearchRequestDTO restaurantSearchRequestDTO, @PageableDefault(size = 15) Pageable pageable){
-//        return restaurantService.searchList(restaurantSearchRequestDTO, pageable);
-//    }
+    @GetMapping
+    @ApiOperation(value = "맛집리스트", notes = "입력된 위치에서 지정된 거리내의 맛집 리스트 검색")
+    public ResponseEntity<Page<RestaurantSearchResponseDTO>> searchList(@Valid RestaurantSearchRequestDTO restaurantSearchRequestDTO, @PageableDefault(size = 15) Pageable pageable){
+        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.searchList(restaurantSearchRequestDTO, pageable));
+    }
 
     @GetMapping("/{restaurantId}")
     @ApiOperation(value = "맛집 상세정보", notes = "맛집 상세정보")
