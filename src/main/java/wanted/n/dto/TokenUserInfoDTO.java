@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class UserInfoDTO {
+public class TokenUserInfoDTO {
     Long id;
 }

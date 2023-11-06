@@ -27,7 +27,7 @@ public class AuthService {
     public AccessTokenDTO issueNewAccessToken(RefreshTokenDTO refreshTokenDTO) {
         String refreshToken = refreshTokenDTO.getRefreshToken();
 
-        if(isRefreshTokenEqServer(refreshToken))
+        if(jwtProvider.validateToken(refreshToken) & isRefreshTokenEqServer(refreshToken))
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
 
         Long id = jwtProvider.getIdFromToken(refreshToken);
@@ -63,10 +63,10 @@ public class AuthService {
      *      <Key, Value> 형식으로 <id, Refresh Token>을 Redis 서버에 저장합니다.
      */
     @Transactional
-    public RefreshTokenDTO issueNewRefreshToken(UserInfoDTO userInfoDTO) {
-        String refreshToken = jwtProvider.generateRefreshToken(userInfoDTO.getId());
+    public RefreshTokenDTO issueNewRefreshToken(TokenUserInfoDTO tokenUserInfoDTO) {
+        String refreshToken = jwtProvider.generateRefreshToken(tokenUserInfoDTO.getId());
 
-        redisService.saveRefreshToken(userInfoDTO.getId(), refreshToken);
+        redisService.saveRefreshToken(tokenUserInfoDTO.getId(), refreshToken);
 
         return RefreshTokenDTO.builder()
                 .refreshToken(refreshToken)
@@ -92,9 +92,9 @@ public class AuthService {
     /**
         Refresh Token 삭제 메소드
      */
-    public void deleteRefreshToken(UserInfoDTO userInfoDTO) {
+    public void deleteRefreshToken(TokenUserInfoDTO tokenUserInfoDTO) {
 
-        redisService.deleteRefreshToken(userInfoDTO.getId());
+        redisService.deleteRefreshToken(tokenUserInfoDTO.getId());
     }
 
 }
