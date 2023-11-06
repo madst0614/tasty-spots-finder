@@ -27,11 +27,11 @@ public class UserController {
     private final UserService userService;
     @PostMapping("/sign-up")
     @ApiOperation(value = "회원가입", notes = "사용자가 회원정보를 입력하여 회원가입을 진행합니다.")
-    public ResponseEntity<Void> registerUser(
+    public ResponseEntity<Void> signUp(
             @Valid @RequestBody UserSignUpRequestDTO userSignUpRequestDTO) {
 
         // 입력받은 정보로 회원가입
-        userService.registerUser(userSignUpRequestDTO);
+        userService.signUpUser(userSignUpRequestDTO);
 
         return ResponseEntity.status(CREATED).build();
     }
@@ -48,7 +48,6 @@ public class UserController {
     @PostMapping("/sign-out")
     @ApiOperation(value = "로그아웃", notes = "사용자의 로그아웃을 진행합니다.")
     public ResponseEntity<Void> signOut(@RequestHeader(AUTHORIZATION) String token) {
-
         userService.signOutUser(UserSignOutRequestDTO.builder().token(token).build());
 
         return ResponseEntity.status(NO_CONTENT).build();

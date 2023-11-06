@@ -26,7 +26,7 @@ public class UserService {
      * email 중복 체크 하여 중복 시 이메일 중복 exception
      */
     @Transactional
-    public void registerUser(UserSignUpRequestDTO userSignUpRequestDTO) {
+    public void signUpUser(UserSignUpRequestDTO userSignUpRequestDTO) {
 
         String password = userSignUpRequestDTO.getPassword();
 
@@ -57,7 +57,7 @@ public class UserService {
         isPasswordMatch(signInRequest.getPassword(), user.getPassword());
 
         String accessToken = authService.signInAccessToken(user).getAccessToken();
-        String refreshToken = authService.issueNewRefreshToken(UserInfoDTO.builder().id(user.getId()).build()).getRefreshToken();
+        String refreshToken = authService.issueNewRefreshToken(TokenUserInfoDTO.builder().id(user.getId()).build()).getRefreshToken();
 
         return UserSignInResponseDTO.builder()
                 .accessToken(accessToken)
@@ -74,7 +74,7 @@ public class UserService {
         Long id = authService.getIdFromToken
                         (AccessTokenDTO.builder().accessToken(userSignOutRequestDTO.getToken()).build());
 
-        authService.deleteRefreshToken(UserInfoDTO.builder().id(id).build());
+        authService.deleteRefreshToken(TokenUserInfoDTO.builder().id(id).build());
     }
 
     /**
