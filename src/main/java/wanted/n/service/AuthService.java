@@ -1,6 +1,7 @@
 package wanted.n.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wanted.n.config.provider.JwtProvider;
@@ -12,6 +13,7 @@ import wanted.n.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
@@ -27,7 +29,7 @@ public class AuthService {
     public AccessTokenDTO issueNewAccessToken(RefreshTokenDTO refreshTokenDTO) {
         String refreshToken = refreshTokenDTO.getRefreshToken();
 
-        if(jwtProvider.validateToken(refreshToken) & isRefreshTokenEqServer(refreshToken))
+        if(jwtProvider.validateToken(refreshToken) || !isRefreshTokenInServer(refreshToken))
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
 
         Long id = jwtProvider.getIdFromToken(refreshToken);
@@ -71,11 +73,11 @@ public class AuthService {
      *  기능
      *      Refresh Token이 레디스에 있는 값과 일치하는지 확인합니다.
      */
-    public Boolean isRefreshTokenEqServer(String refreshToken) {
+    public Boolean isRefreshTokenInServer(String refreshToken) {
+        String serverToken = redisService.getRefreshToken(getIdFromToken(refreshToken));
 
         // 레디스에 있는 값과 일치하면 true 반환
-        return redisService.isRefreshTokenInRedis
-                (jwtProvider.getIdFromToken(refreshToken), refreshToken);
+        return refreshToken.equals(serverToken);
     }
 
     public Long getIdFromToken(String token){
