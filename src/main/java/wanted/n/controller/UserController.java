@@ -45,7 +45,7 @@ public class UserController {
     @PostMapping("/sign-out")
     @ApiOperation(value = "로그아웃", notes = "사용자의 로그아웃을 진행합니다.")
     public ResponseEntity<Void> signOut(@RequestHeader(AUTHORIZATION) String token) {
-        userService.signOutUser(UserSignOutRequestDTO.builder().token(token).build());
+        userService.signOutUser(token);
 
         return ResponseEntity.status(NO_CONTENT).build();
     }

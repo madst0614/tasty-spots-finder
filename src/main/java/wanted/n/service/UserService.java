@@ -1,6 +1,7 @@
 package wanted.n.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import static wanted.n.exception.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -55,8 +57,8 @@ public class UserService {
 
         isPasswordMatch(signInRequest.getPassword(), user.getPassword());
 
-        String accessToken = authService.signInAccessToken(user).getAccessToken();
-        String refreshToken = authService.issueNewRefreshToken(TokenUserInfoDTO.builder().id(user.getId()).build()).getRefreshToken();
+        String accessToken = authService.signInAccessToken(user);
+        String refreshToken = authService.issueNewRefreshToken(user.getId());
 
         return UserSignInResponseDTO.builder()
                 .accessToken(accessToken)
@@ -68,11 +70,11 @@ public class UserService {
      * 사용자 로그아웃 처리를 하는 메서드
      *  토큰으로부터 id를 추출하여 refresh 토큰을 제거합니다
      */
-    public void signOutUser(UserSignOutRequestDTO userSignOutRequestDTO) {
+    public void signOutUser(String token) {
         Long id = authService.getIdFromToken
-                        (AccessTokenDTO.builder().accessToken(userSignOutRequestDTO.getToken()).build());
+                        (token);
 
-        authService.deleteRefreshToken(TokenUserInfoDTO.builder().id(id).build());
+        authService.deleteRefreshToken(id);
     }
 
     /**
@@ -142,6 +144,6 @@ public class UserService {
     // 토큰으로부터 id 정보를 가져오는 메소드
     private Long getIdFromToken(String token){
         return authService.getIdFromToken
-                (AccessTokenDTO.builder().accessToken(token).build());
+                (token);
     }
 }

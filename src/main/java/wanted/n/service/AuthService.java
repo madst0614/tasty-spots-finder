@@ -46,14 +46,9 @@ public class AuthService {
      *  로그인 시 Access Token 발급 메소드
      */
     @Transactional
-    public AccessTokenDTO signInAccessToken(User user) {
+    public String signInAccessToken(User user) {
 
-        String newAccessToken =
-                jwtProvider.generateAccessToken(TokenIssuanceDTO.from(user));
-
-        return AccessTokenDTO.builder()
-                .accessToken(newAccessToken)
-                .build();
+        return jwtProvider.generateAccessToken(TokenIssuanceDTO.from(user));
     }
 
     /**
@@ -63,14 +58,12 @@ public class AuthService {
      *      <Key, Value> 형식으로 <id, Refresh Token>을 Redis 서버에 저장합니다.
      */
     @Transactional
-    public RefreshTokenDTO issueNewRefreshToken(TokenUserInfoDTO tokenUserInfoDTO) {
-        String refreshToken = jwtProvider.generateRefreshToken(tokenUserInfoDTO.getId());
+    public String issueNewRefreshToken(Long id) {
+        String refreshToken = jwtProvider.generateRefreshToken(id);
 
-        redisService.saveRefreshToken(tokenUserInfoDTO.getId(), refreshToken);
+        redisService.saveRefreshToken(id, refreshToken);
 
-        return RefreshTokenDTO.builder()
-                .refreshToken(refreshToken)
-                .build();
+        return refreshToken;
     }
 
     /**
@@ -85,16 +78,16 @@ public class AuthService {
                 (jwtProvider.getIdFromToken(refreshToken), refreshToken);
     }
 
-    public Long getIdFromToken(AccessTokenDTO accessTokenDTO){
-        return jwtProvider.getIdFromToken(accessTokenDTO.getAccessToken());
+    public Long getIdFromToken(String token){
+        return jwtProvider.getIdFromToken(token);
     }
 
     /**
         Refresh Token 삭제 메소드
      */
-    public void deleteRefreshToken(TokenUserInfoDTO tokenUserInfoDTO) {
+    public void deleteRefreshToken(Long id) {
 
-        redisService.deleteRefreshToken(tokenUserInfoDTO.getId());
+        redisService.deleteRefreshToken(id);
     }
 
 }
