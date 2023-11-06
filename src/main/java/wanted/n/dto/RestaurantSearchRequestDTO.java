@@ -15,7 +15,7 @@ public class RestaurantSearchRequestDTO {
     @NotNull(message = "lat 필드는 필수 입력 항목입니다.")
     private Double lat;
 
-    @NotNull(message = "lat 필드는 필수 입력 항목입니다.")
+    @NotNull(message = "lon 필드는 필수 입력 항목입니다.")
     private Double lon;
 
     @NotNull(message = "range 필드는 필수 입력 항목입니다.")
