@@ -13,6 +13,7 @@ java {
 }
 
 configurations {
+	querydslApt
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -48,22 +49,20 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
-
-	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 }
 
 def querydslSrcDir = 'src/main/generated'
 sourceSets {
 	main {
 		java {
-			srcDirs += [ querydslSrcDir ]
+			srcDirs += [querydslSrcDir]
 		}
 	}
 }
 
 tasks.withType(JavaCompile) {
 	options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=javax.annotation.Generated'
-	options.compilerArgs << '-parameters' // Java 8 이상에서 컴파일 시 메서드 파라미터 이름을 유지하기 위한 옵션 추가
+	options.compilerArgs << '-parameters'
 }
 
 tasks.named('test') {
@@ -78,6 +77,10 @@ compileJava {
 	doLast {
 		tasks.querydslProcessor.generationRound.incrementAndGet()
 	}
+}
+
+tasks.withType(JavaCompile) {
+	options.annotationProcessorPath = configurations.querydslApt
 }
 
 querydsl {
