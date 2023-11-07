@@ -1,5 +1,9 @@
 package wanted.n.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +38,18 @@ public class RedisConfig {
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+        // 자바 LocalDatetime 직렬화에 필요한 설정
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        //GenericJackson2JsonRedisSerializer에 objectMapper를 사용할 시 필요한 설정
+        //직렬화/역직렬화 시 class type 정보를 포함하도록 설정
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator
+                .builder()
+                .allowIfSubType(Object.class)
+                .build();
+        objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+
         // Redis 캐시 설정 구성
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofDays(1)) // 캐시 항목의 만료 기간을 1일로 설정
@@ -42,7 +58,7 @@ public class RedisConfig {
                                 .fromSerializer(new StringRedisSerializer())) // 캐시 키를 문자열로 직렬화
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair
-                                .fromSerializer(new GenericJackson2JsonRedisSerializer())); // 캐시 값을 JSON으로 직렬화
+                                .fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper))); // 캐시 값을 JSON으로 직렬화
 
         // RedisCacheManager 빌더를 사용하여 Redis 캐시 매니저 생성
         return RedisCacheManager.builder(RedisCacheWriter.lockingRedisCacheWriter(redisConnectionFactory))
