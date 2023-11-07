@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.17'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10' // gradle caching 무효화
 }
 
 group = 'wanted'
@@ -47,6 +48,8 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 }
 
 def querydslSrcDir = 'src/main/generated'
@@ -69,4 +72,15 @@ tasks.named('test') {
 
 jar {
 	enabled = false
+}
+
+compileJava {
+	doLast {
+		tasks.querydslProcessor.generationRound.incrementAndGet()
+	}
+}
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = project.file("src/main/generated")
 }
