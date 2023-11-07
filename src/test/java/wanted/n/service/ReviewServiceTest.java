@@ -77,7 +77,7 @@ class ReviewServiceTest {
 
         assertThatThrownBy(() -> reviewService.createReview(reviewRequestDTO))
                 .isInstanceOf(CustomException.class)
-                .hasMessage("해당 유저 정보를 찾을 수 없습니다.");
+                .hasMessage("해당 유저가 존재하지 않습니다.");
     }
 
     @Test

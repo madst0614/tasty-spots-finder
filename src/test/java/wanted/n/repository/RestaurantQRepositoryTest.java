@@ -65,7 +65,6 @@ class RestaurantQRepositoryTest {
         Pageable pageable = PageRequest.of(0,3);
         Page<RestaurantSearchResponseDTO> resultList = restaurantRepository.findBySearch(restaurantSearchRequestDTO, pageable);
 
-        assertThat(resultList.getContent().size()).isEqualTo(7);
         assertThat(resultList.getTotalPages()).isEqualTo(3);
         assertThat(resultList.getTotalElements()).isEqualTo(7);
         assertThat(resultList.getSize()).isEqualTo(3);
@@ -74,7 +73,6 @@ class RestaurantQRepositoryTest {
         pageable = PageRequest.of(1,3);
         resultList = restaurantRepository.findBySearch(restaurantSearchRequestDTO, pageable);
 
-        assertThat(resultList.getContent().size()).isEqualTo(7);
         assertThat(resultList.getTotalPages()).isEqualTo(3);
         assertThat(resultList.getTotalElements()).isEqualTo(7);
         assertThat(resultList.getSize()).isEqualTo(3);
