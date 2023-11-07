@@ -43,7 +43,7 @@
 <img src="https://img.shields.io/badge/intellijidea-000000?&logo=intellijidea&logoColor=white"> <img src="https://img.shields.io/badge/postman-FF6C37?&logo=postman&logoColor=white"> <img src="https://img.shields.io/badge/swagger-85EA2D?&logo=swagger&logoColor=white">
 
 #### 배포환경
-<image src="https://img.shields.io/badge/Docker-2496ED?&logo=Docker&logoColor=white"><img src="https://img.shields.io/badge/aws-232F3E?&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/ec2-FF9900?&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?&logo=amazonrds&logoColor=white"> <img src="https://img.shields.io/badge/ElasticCache-201d90?&logo=amazonelasticcache&logoColor=white" alt="actions">
+<img src="https://img.shields.io/badge/aws-232F3E?&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/ec2-FF9900?&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?&logo=amazonrds&logoColor=white">
 <br>
 <img src="https://img.shields.io/badge/github-181717?&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/github actions-2088FF?&logo=githubactions&logoColor=white" alt="actions">
 
@@ -248,7 +248,7 @@
 </details>
 
 ## 시스템 구성도
-![시스템 구성도](https://drive.google.com/uc?export=view&id=1k0sQtQ5S5BhZoroljc43S4tmxW5yyacz)
+![시스템 구성도](./readme_source/system_diagram/system_diagram.png)
 
 ## ERD
 ![ERD](./readme_source/erd/tastyspot.png)
