@@ -23,14 +23,19 @@ public class JwtFilter extends OncePerRequestFilter {
 
     /* 프리 패스 리스트(인증 없이) : auth(refresh token), users(sign-in, sign-up) */
     private static final String[] ALL_WHITELIST
-            ={"/api/v1/auth/token/access"
+            ={
+            "/v2/api-docs",  "/configuration/ui",
+            "/swagger-resources/**", "/configuration/security",
+            "/swagger-ui.html", "/webjars/**","/swagger/**",
+            "/swagger-ui/**", "/swagger-ui/", "/swagger-resources/", "/swagger-resources", "/v2/api-docs"
+            , "/api/v1/auth/token/access"
             , "/api/v1/users/sign-in"
             , "/api/v1/users/sign-up"};
 
     /*
         do Filtering Internal
         1. ALL_WHITELIST 체크
-        2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED
+        2. 토큰 유무 체크 -> 없으면 HttpsResponse UNAUTHORIZED   
         3. 토큰 유효 기간 체크 -> 만료 됐으면 HttpsResponse UNAUTHORIZED
         4. jwtProvider 인증 객체 생성 후  ThreadLocal에 저장하여 앱 전반에 전역적으로 참조 가능
 

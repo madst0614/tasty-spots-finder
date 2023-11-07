@@ -80,6 +80,9 @@ public class AuthService {
         return refreshToken.equals(serverToken);
     }
 
+    /**
+     * 토큰으로부터 Id 추출
+     */
     public Long getIdFromToken(String token){
         return jwtProvider.getIdFromToken(token);
     }
