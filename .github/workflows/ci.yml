@@ -64,7 +64,7 @@ jobs:
           cat ./src/main/resources/application.yml
 
       - name: 빌드 진행
-          uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-          with:
-            arguments: clean build
-            cache-disabled: true
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: clean build
+          cache-disabled: true
