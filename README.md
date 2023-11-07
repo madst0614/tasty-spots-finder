@@ -81,9 +81,9 @@
   사용자 회원가입 및 로그인, 로그아웃 기능
 
 - **구현 방법** <br>
-- 회원가입: 사용자 회원 양식을 받아 DB에 저장
-- 로그인: 사용자 로그인 양식을 받아 DB에 비밀번호와 비교한 후, Access Token, Refresh Token 발급
-- 로그아웃: 로그아웃 요청 시, Redis에 저장된 Refresh 토큰을 제거
+    - 회원가입: 사용자 회원 양식을 받아 DB에 저장
+    - 로그인: 사용자 로그인 양식을 받아 DB에 비밀번호와 비교한 후, Access Token, Refresh Token 발급
+    - 로그아웃: 로그아웃 요청 시, Redis에 저장된 Refresh 토큰을 제거
 </details>
 
 <details>
