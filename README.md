@@ -3,10 +3,10 @@
 ## 팀 소개
 <div align="center">
 
-| <img src="./readme_source/team/team1.png" width="140" height="140"> | <img src="./readme_source/team/team2.png" width="140" height="140"> | <img src="./readme_source/team/team3.png" width="140" height="140"> | <img src="./readme_source/team/team4.png" width="140" height="140"> |  
-|---------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------|  
-| <center>Back-End</center>                                           | <center>Back-End</center>                                                                                                           | <center>Back-End</center>                                                                | <center>Back-End</center>                                                              |                                                                                                 |
-| <center>[이준규](https://github.com/junkyu92)</center>                 | <center>[이현정](https://github.com/12hyeon)</center>                                                                                    | <center>[최승호](https://github.com/madst0614)</center>                                      | <center>[조현수](https://github.com/HyunsooZo)</center>                                      |
+| <img src="./readme_source/team/team1.png" width="140" height="140">  |         <img src="./readme_source/team/team2.png" width="140" height="140">         |  <img src="./readme_source/team/team3.png" width="140" height="140">  |  <img src="./readme_source/team/team4.png" width="140" height="140">  |  
+|:--------------------------------------------------------------------:|:-----------------------------------------------------------------------------------:|:---------------------------------------------------------------------:|:---------------------------------------------------------------------:|  
+|                               Back-End                               |                                      Back-End                                       |                               Back-End                                |                               Back-End                                |                                                                                                 |
+|                  [이준규](https://github.com/junkyu92)                  |                         <[이현정](https://github.com/12hyeon)                          |                  [최승호](https://github.com/madst0614)                  |                  [조현수](https://github.com/HyunsooZo)                  |
 
 </div>
 
