@@ -42,12 +42,4 @@ public class RedisService {
 
         stringRedisTemplate.delete(key);
     }
-
-    @Transactional
-    public Boolean isRefreshTokenInRedis(Long id, String refreshToken){
-        String key = KEY_REFRESH_TOKEN + id.toString();
-
-        return refreshToken.equals(stringRedisTemplate.opsForValue().get(key));
-    }
-
 }

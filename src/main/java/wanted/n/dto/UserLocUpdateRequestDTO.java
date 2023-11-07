@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class UserSignOutRequestDTO {
-    private String token;
+public class UserLocUpdateRequestDTO {
+    Double lat;
+    Double lon;
 }

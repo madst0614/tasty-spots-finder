@@ -79,7 +79,7 @@ public class JwtProvider{
                             .build()
                             .parseClaimsJws(token);
 
-            log.info("<Jwt Provider>  Refresh Token 유효 체크");
+            log.info("<Jwt Provider> Token 유효 체크");
             log.info("<Jwt Provider> id: " + claims.getBody().get("id", String.class));
             log.info("<Jwt Provider 토큰 만료 시간: " + claims.getBody().getExpiration().toString());
 
