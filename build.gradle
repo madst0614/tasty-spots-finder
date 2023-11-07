@@ -8,7 +8,7 @@ group = 'wanted'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '11'
+	sourceCompatibility = JavaVersion.VERSION_11
 }
 
 configurations {
@@ -28,8 +28,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.projectlombok:lombok:1.18.28'
-    compileOnly 'org.projectlombok:lombok'
+	testImplementation 'org.projectlombok:lombok:1.18.28'
+	compileOnly 'org.projectlombok:lombok'
 
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -58,23 +58,15 @@ sourceSets {
 	}
 }
 
-compileJava {
-	options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=javax.annotation.Generated'
-}
-
 tasks.withType(JavaCompile) {
-	options.generatedSourceOutputDirectory = file(querydslSrcDir)
-}
-
-clean {
-	delete file(querydslSrcDir)
+	options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=javax.annotation.Generated'
+	options.compilerArgs << '-parameters' // Java 8 이상에서 컴파일 시 메서드 파라미터 이름을 유지하기 위한 옵션 추가
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-
-jar { // plain jar 파일 미생성
+jar {
 	enabled = false
 }
