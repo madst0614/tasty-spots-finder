@@ -1,0 +1,74 @@
+name: 프로젝트 빌드 및 업로드
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  S3_BUCKET_NAME: private-hyeon-bucket
+  CODE_DEPLOY_APPLICATION_NAME: CICD_TEST_CD
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: CICD-TEST-GROUP
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR 및 Branch 확인
+        run: |
+          if [[ "${{ github.event_name }}" == 'push' && "${{ github.event.ref }}" == 'refs/heads/main' ]]; then
+            echo "Push to main branch is allowed.";
+          else
+            echo "Invalid event or branch. Not allowed.";
+            exit 1;
+          fi
+
+      - name: 체크아웃
+        uses: actions/checkout@v2
+
+      - name: JDK 11 세팅
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: 실행 권한 부여
+        run: chmod +x gradlew
+
+      - name: properties 생성
+        run: |
+          mkdir -p ./src/main/resources/
+          echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+          cat ./src/main/resources/application.yml
+
+      - name: 빌드 진행
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: clean build
+          cache-disabled: true
+
+      - name: AWS 인증
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: S3에 빌드 결과 전달
+        run: |
+          aws deploy push \
+            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+            --ignore-hidden-files \
+            --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
+            --source .
+
+      - name: S3 파일을 CodeDeploy 실행
+        run: |
+          aws deploy create-deployment \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
