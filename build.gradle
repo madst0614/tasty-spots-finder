@@ -73,3 +73,8 @@ clean {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+jar { // plain jar 파일 미생성
+	enabled = false
+}
