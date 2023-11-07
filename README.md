@@ -52,7 +52,7 @@
 <br/>
 
 ## API 문서
-[![Swagger](https://img.shields.io/badge/swagger_문서로_확인하기_(클릭!)-85EA2D?&logo=swagger&logoColor=white)](http://54.225.40.161:8090/swagger-ui/index.html#/)
+[![Swagger](https://img.shields.io/badge/swagger_문서로_확인하기_(클릭!)-85EA2D?&logo=swagger&logoColor=white)](http://52.79.93.98:8080/swagger-ui/index.html#/)
 
 
 | API Type           | Http Method | URL                                  | Description   |
