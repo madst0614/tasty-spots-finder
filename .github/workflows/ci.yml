@@ -1,3 +1,12 @@
+
+
+env:
+  AWS_REGION: ap-northeast-2
+  S3_BUCKET_NAME: private-hyeon-bucket
+  CODE_DEPLOY_APPLICATION_NAME: CICD_TEST_CD
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: CICD-TEST-GROUP
+
+
 name: 프로젝트 빌드 테스트
 
 on:
@@ -8,12 +17,6 @@ on:
 
 permissions:
   contents: read
-
-env:
-  AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: private-hyeon-bucket
-  CODE_DEPLOY_APPLICATION_NAME: CICD_TEST_CD
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: CICD-TEST-GROUP
 
 jobs:
   build:
@@ -46,10 +49,10 @@ jobs:
           fi
 
       - name: 체크아웃
-        uses: actions/checkout@v2 # 최신 버전으로 업데이트
+        uses: actions/checkout@v2
 
       - name: JDK 11 세팅
-        uses: actions/setup-java@v2 # 최신 버전으로 업데이트
+        uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'

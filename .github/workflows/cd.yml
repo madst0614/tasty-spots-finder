@@ -2,7 +2,7 @@ name: 프로젝트 빌드 및 업로드
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -19,18 +19,18 @@ jobs:
     steps:
       - name: PR 및 Branch 확인
         run: |
-          if [[ "${{ github.event_name }}" == 'push' && "${{ github.event.ref }}" == 'refs/heads/dev' ]]; then
-            echo "Push to dev branch is allowed.";
+          if [[ "${{ github.event_name }}" == 'push' && "${{ github.event.ref }}" == 'refs/heads/main' ]]; then
+            echo "Push to main branch is allowed.";
           else
             echo "Invalid event or branch. Not allowed.";
             exit 1;
           fi
 
       - name: 체크아웃
-        uses: actions/checkout@v2 # 최신 버전으로 업데이트
+        uses: actions/checkout@v2
 
       - name: JDK 11 세팅
-        uses: actions/setup-java@v2 # 최신 버전으로 업데이트
+        uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
