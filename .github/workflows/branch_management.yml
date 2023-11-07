@@ -3,33 +3,29 @@ name: 브랜치 관리
 on:
   push:
     branches:
-      - '*'
-      - '!dev'
-      - '!main'
-  pull_request:
-    branches:
-      - '*'
-      - '!dev'
+      - dev
+      - main
 
 jobs:
-  check-branches:
+  check-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Check if branch is allowed
+      - name: Check Branch
         run: |
-          if [[ ${{ github.event_name }} == 'push' && (${{ github.ref }} == 'refs/heads/dev' || ${{ github.ref }} == 'refs/heads/main') ]]; then
-            echo "Branch is allowed.";
+          if [[ ${{ github.event_name }} == 'push' && ${{ github.ref }} == 'refs/heads/main' && ${{ github.actor }} != 'your-dev-branch-bot' ]]; then
+            echo "Push to main branch is allowed only from the 'dev' branch.";
+            exit 1;
+          elif [[ ${{ github.event_name }} == 'push' && ${{ github.ref }} == 'refs/heads/dev' ]]; then
+            echo "Push to 'dev' branch is allowed.";
           elif [[ ${{ github.event_name }} == 'pull_request' && (${{ github.event.action }} == 'opened' || ${{ github.event.action }} == 'synchronize') ]]; then
-            if [[ ${{ github.head_ref }} == 'dev' || ${{ github.head_ref }} == 'main' ]]; then
-              echo "Branch is allowed.";
+            if [[ ${{ github.base_ref }} == 'dev' ]]; then
+              echo "Pull requests to main branch are allowed only from the 'dev' branch.";
+              exit 1;
             else
-              echo "Branch is not allowed.";
+              echo "Pull requests from this branch are not allowed.";
               exit 1;
             fi
           else
-            echo "Branch is not allowed.";
+            echo "Pushes and pull requests to main branch are not allowed from this branch.";
             exit 1;
           fi
