@@ -37,7 +37,6 @@ public class SecurityConfig {
                 );
 
         return http.build();
-
     }
 
     /* 비밀번호 암호화에 사용할 BcryptPasswordEncoder 빈 등록*/
