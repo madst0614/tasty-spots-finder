@@ -79,6 +79,8 @@ public class RestaurantDetailResponseDTO {
     @Builder
     @Getter
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ReviewDTO {
         private Long id;
         private UserDTO user;
@@ -101,6 +103,8 @@ public class RestaurantDetailResponseDTO {
     @Builder
     @Getter
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class UserDTO {
         private Long id;
         private String account;

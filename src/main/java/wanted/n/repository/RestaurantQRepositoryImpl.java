@@ -69,6 +69,8 @@ public class RestaurantQRepositoryImpl implements RestaurantQRepository {
                 .from(restaurant)
                 .where(inRange(restaurantSearchRequestDTO))
                 .orderBy(orderBy(restaurantSearchRequestDTO))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> totalQuery = queryFactory.select(restaurant.count())
@@ -99,9 +101,11 @@ public class RestaurantQRepositoryImpl implements RestaurantQRepository {
      *  rate - 평점 높은 순
      */
     public OrderSpecifier<?> orderBy(RestaurantSearchRequestDTO restaurantSearchRequestDTO){
-        if(StringUtils.hasText(restaurantSearchRequestDTO.getOrderBy())){
-            String orderBy = restaurantSearchRequestDTO.getOrderBy();
-            if(orderBy.equals("rate")){
+        boolean dtoHasOrderCondition = StringUtils.hasText(restaurantSearchRequestDTO.getOrderBy());
+
+        if(dtoHasOrderCondition){
+            boolean orderByEqRate = restaurantSearchRequestDTO.getOrderBy().equals("rate");
+            if(orderByEqRate){
                 return restaurant.rate.desc();
             }
         }

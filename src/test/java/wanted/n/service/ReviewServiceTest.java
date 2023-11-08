@@ -71,14 +71,15 @@ class ReviewServiceTest {
         verify(reviewRepository, times(1)).save(any(Review.class));
     }
 
-/*    @Test
+    @Test
     void 리뷰등록_실패_유저id(){
         when(userRepository.findById(1L)).thenThrow(new CustomException(USER_NOT_FOUND));
 
         assertThatThrownBy(() -> reviewService.createReview(reviewRequestDTO))
                 .isInstanceOf(CustomException.class)
-                .hasMessage("해당 유저 정보를 찾을 수 없습니다.");
-    }*/
+                .hasMessage("해당 유저가 존재하지 않습니다.");
+    }
+
 
     @Test
     void 리뷰등록_실패_맛집id(){
