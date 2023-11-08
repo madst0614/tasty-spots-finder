@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wanted.n.config.provider.JwtProvider;
 import wanted.n.dto.ReviewRequestDTO;
-import wanted.n.service.RestaurantService;
 import wanted.n.service.ReviewService;
 
 import javax.validation.Valid;
@@ -21,15 +21,12 @@ import static org.springframework.http.HttpHeaders.*;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final RestaurantService restaurantService;
-    //private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("")
     @ApiOperation(value = "리뷰등록", notes = "리뷰등록 api입니다.")
-    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRequestDTO reviewRequestDTO
-            //, @RequestHeader(AUTHORIZATION) String token
-    ){
-        //reviewRequestDTO.setUserId(jwtTokenProvider.getIdFromToken(token));
+    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRequestDTO reviewRequestDTO, @RequestHeader(AUTHORIZATION) String token){
+        reviewRequestDTO.setUserId(jwtProvider.getIdFromToken(token));
         reviewService.createReview(reviewRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

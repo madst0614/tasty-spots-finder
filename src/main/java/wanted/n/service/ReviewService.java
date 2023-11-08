@@ -1,6 +1,8 @@
 package wanted.n.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wanted.n.domain.Restaurant;
@@ -22,8 +24,10 @@ public class ReviewService {
 
     /**
      * 리뷰 등록
+     * 리뷰 등록시 redis에서 해당 식당의 데이터 삭제
      */
     @Transactional
+    @CacheEvict(value = "RestaurantDetailResponseDTO", key = "#reviewRequestDTO.restaurantId")
     public void createReview(ReviewRequestDTO reviewRequestDTO){
 
         reviewRequestDTO.setUser(userRepository.findById(reviewRequestDTO.getUserId())
