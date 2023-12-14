@@ -13,12 +13,12 @@
 ## 목차
 - [개요](#개요)
 - [사용기술](#사용기술)
+- [느낀 점](#느낀-점)
 - [API 문서](#API-문서)
 - [구현 기능](#구현기능)
 - [시스템 구성도](#시스템-구성도)
 - [ERD](#ERD)
-- [TIL 및 회고](#프로젝트-관리-및-회고
-  )
+
 
 
 ## 개요
@@ -50,6 +50,11 @@
 #### 협업도구
 <img src="https://img.shields.io/badge/discord-4A154B?&logo=discord&logoColor=white"> <img src="https://img.shields.io/badge/notion-000000?&logo=notion&logoColor=white">
 <br/>
+
+## 느낀 점
+두 번째 팀 프로젝트는 Auth 기능과 User 기능을 맡았다. 스프링 시큐리티와 Jwt Token 방식 Auth 기능 구현은 처음이였기에 이전의 팀원의 코드를 참고하여 최대한 학습하였다.  
+프로젝트를 진행하면서 User 도메인을 팀원들과 공유할 일이 있었는데 후에 User 도메인 네이밍을 수정하는 과정에서 팀원들과 코드가 엇갈렸고 해당 도메인 네임을 원상복구 했다.  
+개발은 나 혼자 하는 일이 아니라는 것을 깨닫고 깊이 반성했다. 또한 코드 리뷰를 받으면서 팀원의 관점을 공유 했고 부족한 나의 관점을 채워나갈 수 있었다. 
 
 ## API 문서
 [![Swagger](https://img.shields.io/badge/swagger_문서로_확인하기_(클릭!)-85EA2D?&logo=swagger&logoColor=white)](http://52.79.93.98:8080/swagger-ui/index.html#/)
